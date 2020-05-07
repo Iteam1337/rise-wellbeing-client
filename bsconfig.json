@@ -1,0 +1,45 @@
+{
+  "name": "dp-webapp",
+  "reason": {
+    "react-jsx": 3
+  },
+  "sources": {
+    "dir": "src",
+    "subdirs": true,
+    "generators": [
+      {
+        "name": "gen-tailwind",
+        "edge": ["tailwind.css", ":", "index.css"]
+      }
+    ]
+  },
+  "generators": [
+    {
+      "name": "gen-tailwind",
+      "command": "tailwindcss build $in -o $out -c ../../tailwind.config.js"
+    }
+  ],
+  "bsc-flags": ["-bs-super-errors", "-bs-no-version-header"],
+  "ppx-flags": [
+    "re-formality/ppx",
+    ["@dylanirlbeck/tailwind-ppx/tailwind-ppx", "-path ./src/tailwind.css"]
+  ],
+  "package-specs": [
+    {
+      "module": "commonjs",
+      "in-source": true
+    }
+  ],
+  "suffix": ".bs.js",
+  "namespace": true,
+  "bs-dependencies": ["reason-react", "re-classnames", "re-formality"],
+  "refmt": 3,
+  "gentypeconfig": {
+    "language": "typescript",
+    "shims": {},
+    "debug": {
+      "all": false,
+      "basic": false
+    }
+  }
+}
