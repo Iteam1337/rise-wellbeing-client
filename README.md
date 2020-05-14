@@ -24,3 +24,21 @@ npm run webpack:production
 This will replace the development artifact `build/Index.js` for an optimized version as well as copy `src/index.html` into `build/`. You can then deploy the contents of the `build` directory (`index.html` and `Index.js`).
 
 **To enable dead code elimination**, change `bsconfig.json`'s `package-specs` `module` from `"commonjs"` to `"es6"`. Then re-run the above 2 commands. This will allow Webpack to remove unused code.
+
+## Developing
+
+### VSCode
+
+1. Install the [OCaml Platform VSCode extension](https://marketplace.visualstudio.com/items?itemName=ocamllabs.ocaml-platform)
+
+2. Install [esy](httpds://esy.sh)
+
+```sh
+npm install -g esy@latest
+```
+
+3. Run esy
+
+```sh
+esy
+```
