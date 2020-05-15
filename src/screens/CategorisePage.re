@@ -24,7 +24,7 @@ let optionsQuestion =
 
 [@react.component]
 let make = () => {
-  <Layout.Container spacing=`Small>
+  <Layout.Container spacing=`None>
     <Layout.Column spacing=`Large>
       <Typography.H1> {React.string("Categorise")} </Typography.H1>
       <Conversation questions={q->Belt.List.fromArray} />

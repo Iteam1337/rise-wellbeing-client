@@ -7,8 +7,11 @@ module Container = {
     | `Large => [%tw "p-8"];
 
   [@react.component]
-  let make = (~children, ~spacing=`None) => {
-    <section className={spacingToStyling(spacing)}> children </section>;
+  let make = (~children, ~spacing=`None, ~classNames=?) => {
+    let additionalClassNames = Cn.unpack(classNames);
+    <section className={spacingToStyling(spacing) ++ additionalClassNames}>
+      children
+    </section>;
   };
 };
 
@@ -21,8 +24,13 @@ module Column = {
     | `Large => [%tw " gap-8"];
 
   [@react.component]
-  let make = (~children, ~spacing=`Small) => {
-    <section className={[%tw "grid"] ++ spacingToStyling(spacing)}>
+  let make = (~children, ~spacing=`Small, ~classNames=?) => {
+    let additionalClassNames = Cn.unpack(classNames);
+
+    <section
+      className={
+        [%tw "grid"] ++ spacingToStyling(spacing) ++ additionalClassNames
+      }>
       children
     </section>;
   };

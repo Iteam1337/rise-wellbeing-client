@@ -19,6 +19,6 @@ module H2 = {
 module P = {
   [@react.component]
   let make = (~children) => {
-    <p className=[%tw "text-base mb-2 md:mb-4"]> children </p>;
+    <p className=[%tw "text-base mb-2 md:mb-4 text-gray-700"]> children </p>;
   };
 };

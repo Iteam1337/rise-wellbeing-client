@@ -1,6 +1,6 @@
 [@react.component]
 let make = () => {
-  <Layout.Container spacing=`Small>
+  <Layout.Container spacing=`None>
     <Layout.Column>
       <Layout.Container>
         <Typography.H1>
