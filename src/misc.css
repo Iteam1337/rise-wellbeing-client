@@ -8,6 +8,12 @@
   animation-fill-mode: backwards;
 }
 
+.fade-in-delay-answer {
+  animation: fadeIn ease 500ms;
+  animation-delay: 1250ms;
+  animation-fill-mode: backwards;
+}
+
 @keyframes fadeIn {
   0% {
     transform: translateY(100%);

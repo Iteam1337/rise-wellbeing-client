@@ -5,16 +5,14 @@ type answer =
   | SelectOption(Shared.Question.selectOption);
 
 type action =
-  | Answer(answer)
-  | UpdateInput(string);
+  | Answer(answer);
 
 type state = {
   questionIndex: int,
-  inputValue: string,
   questions: list(Shared.Question.question),
 };
 
-let initialState = questions => {questionIndex: 0, inputValue: "", questions};
+let initialState = questions => {questionIndex: 0, questions};
 
 let reducer = (state, action) =>
   switch (action) {
@@ -59,12 +57,7 @@ let reducer = (state, action) =>
           )
       };
 
-    {
-      questions: updatedQuestions,
-      inputValue: "",
-      questionIndex: state.questionIndex + 1,
-    };
-  | UpdateInput(newValue) => {...state, inputValue: newValue}
+    {questions: updatedQuestions, questionIndex: state.questionIndex + 1};
   };
 
 let questionToReactElement = (~immediate, ~delayed, question) => {
@@ -141,39 +134,24 @@ let make = (~questions: list(Shared.Question.question)) => {
        )}
     </Layout.Column>
     <div
-      className=[%tw
-        "fixed bottom-0 right-0 left-0 p-6 md:max-w-screen-lg mx-auto"
-      ]>
+      key={state.questionIndex->string_of_int}
+      className={
+        [%tw "fixed bottom-0 right-0 left-0 p-6 md:max-w-screen-lg mx-auto"]
+        ++ " fade-in-delay-answer"
+      }>
       {switch (questionToRender) {
        | Some(Shared.Question.Text({answerPlaceholder, _})) =>
-         <form
-           onSubmit={event => {
-             event->ReactEvent.Form.preventDefault;
-             dispatch(Answer(Text(state.inputValue)));
-           }}>
-           <Elements.Input
-             value={state.inputValue}
-             label=""
-             onBlur=ignore
-             onChange={event =>
-               dispatch(UpdateInput(event->ReactEvent.Form.target##value))
-             }
-             placeholder={answerPlaceholder->Option.getWithDefault("")}
-           />
-         </form>
+         <Elements.ChatFormAnswerInput
+           placeholder=?answerPlaceholder
+           onSubmit={answer => {dispatch(Answer(Text(answer)))}}
+         />
        | Some(Select({options, _})) =>
-         <Layout.Row spacing=`None classNames=[%tw " justify-center"]>
-           {options
-            ->List.map(selectOption =>
-                <Elements.BubbleOption
-                  key={selectOption.text}
-                  onClick={_e => SelectOption(selectOption)->Answer->dispatch}>
-                  {selectOption.text}
-                </Elements.BubbleOption>
-              )
-            ->List.toArray
-            ->React.array}
-         </Layout.Row>
+         <Elements.ChatFormAnswerOptions
+           options
+           onSelect={selectOption =>
+             SelectOption(selectOption)->Answer->dispatch
+           }
+         />
        | None => React.null
        }}
     </div>

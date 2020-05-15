@@ -4,26 +4,30 @@
       "Text",
       {
         "id": "1",
-        "messages": ["Hi there!", "What's your name?"],
-        "answerPlaceholder": "e.g. Karen Elizabeth"
+        "messages": ["Hej!", "Vad heter du?"],
+        "answerPlaceholder": "t.ex. Kim"
       }
     ],
     [
-      "Text",
+      "Select",
       {
         "id": "2",
-        "messages": ["And your favourite food?"],
-        "answerPlaceholder": "e.g. Bananas, Sushi"
+        "message": "Hur har du mått den senaste veckan?",
+        "options": [
+          { "text": "😃", "value": "glad" },
+          { "text": "😞", "value": "uppgiven" },
+          { "text": "😢", "value": "ledsen" }
+        ]
       }
     ],
     [
       "Select",
       {
         "id": "3",
-        "message": "Do you like bananas?",
+        "message": "Känner du att du skulle behöva hjälp?",
         "options": [
-          { "text": "Yes", "value": "yes" },
-          { "text": "No", "value": "no" }
+          { "text": "Ja", "value": "ja" },
+          { "text": "Nej", "value": "nej" }
         ]
       }
     ]

@@ -1,3 +1,5 @@
+open Belt;
+
 module Label = {
   [@react.component]
   let make = (~text) => {
@@ -36,7 +38,7 @@ module Input = {
         type_
         placeholder
       />
-      {Belt.Option.mapWithDefault(errorMessage, React.null, errMessage => {
+      {Option.mapWithDefault(errorMessage, React.null, errMessage => {
          <p className=[%tw "text-red-500 text-xs italic"]>
            errMessage->React.string
          </p>
@@ -89,10 +91,51 @@ module BubbleOption = {
     <button
       onClick
       className=[%tw
-        "text-base sm:text-lg px-6 py-3 rounded-full bg-white text-black hover:bg-black
+        "text-base sm:text-lg px-6 py-3 rounded-full bg-white text-black transition
+        ease-in-out duration-200 transition-colors hover:bg-black
         hover:text-white justify-self-start mr-2 last:mr-0 cursor-pointer"
       ]>
       children->React.string
     </button>;
+  };
+};
+module ChatFormAnswerInput = {
+  [@react.component]
+  let make = (~onSubmit, ~placeholder={j|"Skriv ditt svar här...|j}) => {
+    let (inputValue, setInputValue) = React.useState(_ => "");
+
+    <form
+      onSubmit={event => {
+        event->ReactEvent.Form.preventDefault;
+        onSubmit(inputValue);
+      }}>
+      <Input
+        value=inputValue
+        label=""
+        onBlur=ignore
+        onChange={event => {
+          event->ReactEvent.Form.persist;
+          setInputValue(_prevValue => event->ReactEvent.Form.target##value);
+        }}
+        placeholder
+      />
+    </form>;
+  };
+};
+
+module ChatFormAnswerOptions = {
+  [@react.component]
+  let make = (~options: list(Shared.Question.selectOption), ~onSelect) => {
+    <Layout.Row spacing=`None classNames=[%tw " justify-center"]>
+      {options
+       ->List.map(selectOption =>
+           <BubbleOption
+             key={selectOption.text} onClick={_e => onSelect(selectOption)}>
+             {selectOption.text}
+           </BubbleOption>
+         )
+       ->List.toArray
+       ->React.array}
+    </Layout.Row>;
   };
 };

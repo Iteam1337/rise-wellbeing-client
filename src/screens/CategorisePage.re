@@ -2,10 +2,9 @@ let questions = [%raw {j| require("../categorisation.json") |j}];
 let q =
   questions##questions
   ->Belt.Array.map(Shared.Question.question_decode)
-  ->Belt.Array.keepMap(x => {
-      Js.log(x);
-      x->Belt.Result.mapWithDefault(None, x => Some(x));
-    });
+  ->Belt.Array.keepMap(q =>
+      q->Belt.Result.mapWithDefault(None, q => Some(q))
+    );
 
 let textQuestion =
   Shared.Question.Text({
