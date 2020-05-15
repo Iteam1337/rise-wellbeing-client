@@ -31,7 +31,7 @@ module Input = {
         disabled
         className=[%tw
           "appearance-none block w-full bg-gray-300 text-gray-700 border border-gray-200 rounded py-3
-          px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          px-4 leading-tight focus:outline-none focus:bg-white"
         ]
         type_
         placeholder
@@ -62,11 +62,19 @@ module MessageBubble = {
     | `Contrast => [%tw " bg-black text-white"];
 
   [@react.component]
-  let make = (~children, ~align=`Left, ~color=`Default, ~animate=true) => {
+  let make =
+      (
+        ~children,
+        ~align=`Left,
+        ~color=`Default,
+        ~animate=true,
+        ~animationDelayed=false,
+      ) => {
     <div
       className={
         [%tw "text-base sm:text-lg px-6 py-3 rounded-xl"]
-        ++ Cn.ifTrue(" fade-in", animate)
+        ++ Cn.ifTrue(" fade-in-delay", animate && animationDelayed)
+        ++ Cn.ifTrue(" fade-in", animate && !animationDelayed)
         ++ alignmentToStyling(align)
         ++ colorToStyling(color)
       }>
@@ -88,4 +96,3 @@ module BubbleOption = {
     </button>;
   };
 };
-

@@ -37,8 +37,12 @@ module Row = {
     | `Large => [%tw " gap-8"];
 
   [@react.component]
-  let make = (~children, ~spacing=`Small) => {
-    <section className={[%tw "flex "] ++ spacingToStyling(spacing)}>
+  let make = (~children, ~spacing=`Small, ~classNames=?) => {
+    let additionalClassNames = Cn.unpack(classNames);
+    <section
+      className={
+        [%tw "flex "] ++ spacingToStyling(spacing) ++ additionalClassNames
+      }>
       children
     </section>;
   };

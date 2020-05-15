@@ -28,6 +28,4 @@ module Question = {
   type question =
     | Text(textQuestion)
     | Select(selectQuestion);
-
-  type t = {kind: question};
 };

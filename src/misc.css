@@ -2,6 +2,12 @@
   animation: fadeIn ease 500ms;
 }
 
+.fade-in-delay {
+  animation: fadeIn ease 500ms;
+  animation-delay: 500ms;
+  animation-fill-mode: backwards;
+}
+
 @keyframes fadeIn {
   0% {
     transform: translateY(100%);

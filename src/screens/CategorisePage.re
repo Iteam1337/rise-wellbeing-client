@@ -7,7 +7,7 @@ let q =
       x->Belt.Result.mapWithDefault(None, x => Some(x));
     });
 
-let one =
+let textQuestion =
   Shared.Question.Text({
     id: "1",
     messages: ["Hi there!", "What's your name?"],
@@ -15,17 +15,9 @@ let one =
     answerPlaceholder: Some("e.g. Karen Elizabeth"),
   });
 
-let two =
-  Shared.Question.Text({
-    id: "2",
-    messages: ["And your favourite food?"],
-    answer: None,
-    answerPlaceholder: Some("e.g. Bananas, Yakiniku"),
-  });
-
-let three =
+let optionsQuestion =
   Shared.Question.Select({
-    id: "3",
+    id: "2",
     message: "Do you like bananas?",
     options: [{text: "Yes", value: "yes"}, {text: "No", value: "no"}],
     answer: None,

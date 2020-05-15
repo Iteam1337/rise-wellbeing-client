@@ -32,7 +32,7 @@
     }
   ],
   "suffix": ".bs.js",
-  "namespace": true,
+  "namespace": false,
   "bs-dependencies": ["reason-react", "re-classnames", "re-formality", "decco"],
   "refmt": 3,
   "gentypeconfig": {
