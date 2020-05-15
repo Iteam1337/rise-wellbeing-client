@@ -22,6 +22,7 @@
   "bsc-flags": ["-bs-super-errors", "-bs-no-version-header"],
   "ppx-flags": [
     "re-formality/ppx",
+    "decco/ppx",
     ["@dylanirlbeck/tailwind-ppx/tailwind-ppx", "-path ./src/tailwind.css"]
   ],
   "package-specs": [
@@ -32,11 +33,16 @@
   ],
   "suffix": ".bs.js",
   "namespace": true,
-  "bs-dependencies": ["reason-react", "re-classnames", "re-formality"],
+  "bs-dependencies": ["reason-react", "re-classnames", "re-formality", "decco"],
   "refmt": 3,
   "gentypeconfig": {
     "language": "typescript",
-    "shims": {},
+    "shims": {
+      "Js": "Js",
+      "React": "ReactShim",
+      "ReactEvent": "ReactEvent",
+      "ReasonReact": "ReactShim"
+    },
     "debug": {
       "all": false,
       "basic": false

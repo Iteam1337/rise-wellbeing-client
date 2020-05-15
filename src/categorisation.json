@@ -1,0 +1,31 @@
+{
+  "questions": [
+    [
+      "Text",
+      {
+        "id": "1",
+        "messages": ["Hi there!", "What's your name?"],
+        "answerPlaceholder": "e.g. Karen Elizabeth"
+      }
+    ],
+    [
+      "Text",
+      {
+        "id": "2",
+        "messages": ["And your favourite food?"],
+        "answerPlaceholder": "e.g. Bananas, Sushi"
+      }
+    ],
+    [
+      "Select",
+      {
+        "id": "3",
+        "message": "Do you like bananas?",
+        "options": [
+          { "text": "Yes", "value": "yes" },
+          { "text": "No", "value": "no" }
+        ]
+      }
+    ]
+  ]
+}
