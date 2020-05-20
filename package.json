@@ -15,6 +15,7 @@
   "author": "",
   "dependencies": {
     "@dylanirlbeck/tailwind-ppx": "^0.7.0",
+    "bs-webapi": "^0.15.9",
     "decco": "^1.2.1",
     "re-classnames": "^4.1.0",
     "re-formality": "^4.0.0-beta.7",

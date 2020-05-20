@@ -2,7 +2,7 @@
 
 exports[`CategorisePage renders 1`] = `
 <div
-  class="text-base sm:text-lg px-6 py-3 rounded-xl fade-in-delay mr-8 justify-self-start self-start first:rounded-bl-sm last:rounded-tl-sm
+  class="text-base sm:text-lg px-6 py-3 rounded-xl fade-in-delay   mr-8 justify-self-start self-start first:rounded-bl-sm last:rounded-tl-sm
         only-child:rounded-tl-none only-child:rounded-bl-xl mb-2 last:mb-0 bg-white text-black"
 >
   Hur har du mått den senaste veckan?

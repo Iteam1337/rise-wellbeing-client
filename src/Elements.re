@@ -14,27 +14,33 @@ module Input = {
   [@react.component]
   let make =
       (
-        ~label,
+        ~label=?,
         ~value,
         ~disabled=false,
         ~onBlur,
         ~onChange,
+        ~classNames=?,
         ~type_="text",
         ~placeholder="",
         ~errorMessage=None,
       ) => {
     <div className=[%tw "flex flex-col"]>
-      <Label text=label />
+      {label->Option.mapWithDefault(React.null, label => <Label text=label />)}
       <input
-        id=label
+        id={label->Option.getWithDefault("")}
         value
         onBlur
         onChange
         disabled
-        className=[%tw
-          "appearance-none block w-full bg-gray-300 text-gray-700 border border-gray-200 rounded py-3
-          px-4 leading-tight focus:outline-none focus:bg-white"
-        ]
+        className={String.concat(
+          " ",
+          [
+            [%tw
+              "appearance-none block w-full bg-gray-300 text-gray-700 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+            ],
+            Cn.unpack(classNames),
+          ],
+        )}
         type_
         placeholder
       />
@@ -51,17 +57,17 @@ module MessageBubble = {
   let alignmentToStyling =
     fun
     | `Left => [%tw
-        " mr-8 justify-self-start self-start first:rounded-bl-sm last:rounded-tl-sm
+        "mr-8 justify-self-start self-start first:rounded-bl-sm last:rounded-tl-sm
         only-child:rounded-tl-none only-child:rounded-bl-xl mb-2 last:mb-0"
       ]
     | `Right => [%tw
-        " ml-8 justify-self-end self-end first:rounded-br-sm last:rounded-tr-sm"
+        "ml-8 justify-self-end self-end first:rounded-br-sm last:rounded-tr-sm"
       ];
 
   let colorToStyling =
     fun
-    | `Default => [%tw " bg-white text-black"]
-    | `Contrast => [%tw " bg-black text-white"];
+    | `Default => [%tw "bg-white text-black"]
+    | `Contrast => [%tw "bg-black text-white"];
 
   [@react.component]
   let make =
@@ -73,13 +79,17 @@ module MessageBubble = {
         ~animationDelayed=false,
       ) => {
     <div
-      className={
-        [%tw "text-base sm:text-lg px-6 py-3 rounded-xl"]
-        ++ Cn.ifTrue(" fade-in-delay", animate && animationDelayed)
-        ++ Cn.ifTrue(" fade-in", animate && !animationDelayed)
-        ++ alignmentToStyling(align)
-        ++ colorToStyling(color)
-      }>
+      className={String.concat(
+        " ",
+        [
+          [%tw "text-base sm:text-lg px-6 py-3 rounded-xl"],
+          Cn.ifTrue("fade-in-delay", animate && animationDelayed),
+          Cn.ifTrue("fade-in", animate && !animationDelayed),
+          Cn.ifTrue("slide-up", !animate && !animationDelayed),
+          alignmentToStyling(align),
+          colorToStyling(color),
+        ],
+      )}>
       children
     </div>;
   };
@@ -104,21 +114,32 @@ module ChatFormAnswerInput = {
   let make = (~onSubmit, ~placeholder={j|"Skriv ditt svar här...|j}) => {
     let (inputValue, setInputValue) = React.useState(_ => "");
 
+    let handleInputChange = event => {
+      event->ReactEvent.Form.persist;
+      setInputValue(_prevValue => event->ReactEvent.Form.target##value);
+    };
+
     <form
+      className=[%tw "grid grid-cols-2 grid-flow-col items-center"]
       onSubmit={event => {
         event->ReactEvent.Form.preventDefault;
         onSubmit(inputValue);
       }}>
-      <Input
+      <input
         value=inputValue
-        label=""
-        onBlur=ignore
-        onChange={event => {
-          event->ReactEvent.Form.persist;
-          setInputValue(_prevValue => event->ReactEvent.Form.target##value);
-        }}
+        onChange=handleInputChange
+        className=[%tw
+          "appearance-none block w-full bg-gray-300 text-gray-700 py-3 px-4 leading-tight
+            focus:outline-none focus:bg-white col-span-2 rounded-l"
+        ]
+        type_="text"
         placeholder
       />
+      <button
+        className=[%tw "bg-gray-300 h-full p-2 rounded-r"]
+        disabled={String.length(inputValue) == 0}>
+        {React.string("Skicka")}
+      </button>
     </form>;
   };
 };
@@ -137,5 +158,16 @@ module ChatFormAnswerOptions = {
        ->List.toArray
        ->React.array}
     </Layout.Row>;
+  };
+};
+
+module Link = {
+  [@react.component]
+  let make = (~to_, ~children, ~active=false) => {
+    <button
+      className={Cn.ifTrue([%tw "bg-blue-500"], active)}
+      onClick={_event => ReasonReactRouter.push(to_)}>
+      children
+    </button>;
   };
 };

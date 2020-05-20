@@ -11,7 +11,7 @@
     [
       "Select",
       {
-        "id": "2",
+        "id": "3",
         "message": "Hur har du mått den senaste veckan?",
         "options": [
           { "text": "😃", "value": "glad" },
@@ -23,11 +23,22 @@
     [
       "Select",
       {
-        "id": "3",
+        "id": "4",
         "message": "Känner du att du skulle behöva hjälp?",
         "options": [
           { "text": "Ja", "value": "ja" },
           { "text": "Nej", "value": "nej" }
+        ]
+      }
+    ],
+    [
+      "Select",
+      {
+        "id": "5",
+        "message": "Vad skulle du behöva hjälp med?",
+        "options": [
+          { "text": "Sömnen", "value": "sleep" },
+          { "text": "Röra på mig", "value": "training" }
         ]
       }
     ]

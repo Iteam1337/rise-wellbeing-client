@@ -6,27 +6,12 @@ let q =
       q->Belt.Result.mapWithDefault(None, q => Some(q))
     );
 
-let textQuestion =
-  Shared.Question.Text({
-    id: "1",
-    messages: ["Hi there!", "What's your name?"],
-    answer: None,
-    answerPlaceholder: Some("e.g. Karen Elizabeth"),
-  });
-
-let optionsQuestion =
-  Shared.Question.Select({
-    id: "2",
-    message: "Do you like bananas?",
-    options: [{text: "Yes", value: "yes"}, {text: "No", value: "no"}],
-    answer: None,
-  });
-
 [@react.component]
 let make = () => {
-  <Layout.Container spacing=`None>
-    <Layout.Column spacing=`Large>
-      <Typography.H1> {React.string("Categorise")} </Typography.H1>
+  <Layout.Container
+    spacing=`None classNames=[%tw "h-full relative chat-container-bg"]>
+    <Layout.Column
+      spacing=`Large classNames=[%tw "h-full-bottom-nav content-end pb-24"]>
       <Conversation questions={q->Belt.List.fromArray} />
     </Layout.Column>
   </Layout.Container>;

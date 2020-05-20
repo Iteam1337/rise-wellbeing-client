@@ -25054,7 +25054,38 @@ body {
   background-color: rgba(237, 242, 247, var(--bg-opacity));
 }
 
+.chat-container-bg {
+  background: linear-gradient(
+    0deg,
+    #edf2f7,
+    rgba(255, 255, 255, 0) 10%,
+    rgba(255, 255, 255, 0) 90%,
+    #edf2f7
+  );
+}
+
+.chat-container-bg::after {
+  content: " ";
+  background: linear-gradient(
+    0deg,
+    #edf2f7,
+    rgba(255, 255, 255, 0) 10%,
+    rgba(255, 255, 255, 0) 90%,
+    #edf2f7
+  );
+  bottom: 0;
+  height: calc(100% - 8rem);
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
 /* Custom */
+
+.h-full-bottom-nav {
+  height: calc(100% - 2.5rem);
+}
 
 /* Justify */
 
@@ -122753,4 +122784,3 @@ body {
     transition-delay: 1000ms;
   }
 }
-

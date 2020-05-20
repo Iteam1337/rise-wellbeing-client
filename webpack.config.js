@@ -22,6 +22,7 @@ module.exports = {
     compress: true,
     contentBase: outputDir,
     port: process.env.PORT || 8000,
+    disableHostCheck: true,
     historyApiFallback: true,
   },
   module: {

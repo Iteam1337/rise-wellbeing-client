@@ -122,7 +122,8 @@ let make = (~questions: list(Shared.Question.question)) => {
         previousQuestions
       );
 
-  <Layout.Container>
+  <Layout.Container
+    classNames={String.concat(" ", [[%tw "h-full overflow-y-scroll"], ""])}>
     <Layout.Column spacing=`Small>
       {answeredQuestions
        ->List.map(questionToReactElement(~immediate=true, ~delayed=false))
@@ -135,10 +136,15 @@ let make = (~questions: list(Shared.Question.question)) => {
     </Layout.Column>
     <div
       key={state.questionIndex->string_of_int}
-      className={
-        [%tw "fixed bottom-0 right-0 left-0 p-6 md:max-w-screen-lg mx-auto"]
-        ++ " fade-in-delay-answer"
-      }>
+      className={String.concat(
+        " ",
+        [
+          [%tw
+            "fixed bottom-0 pb-20 right-0 left-0 p-6 md:max-w-screen-lg mx-auto"
+          ],
+          "fade-in-delay-answer",
+        ],
+      )}>
       {switch (questionToRender) {
        | Some(Shared.Question.Text({answerPlaceholder, _})) =>
          <Elements.ChatFormAnswerInput
