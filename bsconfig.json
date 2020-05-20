@@ -3,16 +3,22 @@
   "reason": {
     "react-jsx": 3
   },
-  "sources": {
-    "dir": "src",
-    "subdirs": true,
-    "generators": [
-      {
-        "name": "gen-tailwind",
-        "edge": ["tailwind.css", ":", "index.css"]
-      }
-    ]
-  },
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true,
+      "generators": [
+        {
+          "name": "gen-tailwind",
+          "edge": ["tailwind.css", ":", "index.css"]
+        }
+      ]
+    },
+    {
+      "dir": "__tests__",
+      "type": "dev"
+    }
+  ],
   "generators": [
     {
       "name": "gen-tailwind",
@@ -21,6 +27,7 @@
   ],
   "bsc-flags": ["-bs-super-errors", "-bs-no-version-header"],
   "ppx-flags": [
+    "bs-let/ppx",
     "re-formality/ppx",
     "decco/ppx",
     ["@dylanirlbeck/tailwind-ppx/tailwind-ppx", "-path ./src/tailwind.css"]
@@ -34,6 +41,11 @@
   "suffix": ".bs.js",
   "namespace": false,
   "bs-dependencies": ["reason-react", "re-classnames", "re-formality", "decco"],
+  "bs-dev-dependencies": [
+    "reason-test-framework",
+    "bs-react-testing-library",
+    "bs-dom-testing-library"
+  ],
   "refmt": 3,
   "gentypeconfig": {
     "language": "typescript",
