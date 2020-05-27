@@ -3,6 +3,7 @@
 .bsb.lock
 npm-debug.log
 /lib/bs/
+/_esy
 /node_modules/
 *.bs.js
 .tailwind_ppx_cache
