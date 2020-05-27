@@ -1,7 +1,7 @@
 [@react.component]
 let make = () => {
   let url = ReasonReactRouter.useUrl();
-  let isFirstTimeVisitor = IsFirsTimeVisitorHook.use();
+  let isFirstTimeVisitor = IsFirstTimeVisitorHook.use();
 
   if (isFirstTimeVisitor) {
     let screen =
