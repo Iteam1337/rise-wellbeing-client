@@ -7,7 +7,8 @@ let make = () => {
     let screen =
       switch (url.path) {
       | [] => <FirstTimeVisitLandingPage />
-      | ["categorise"] => <CategorisePage />
+      | ["categorise"] =>
+        <CategorisePage onNextQuestion=Webapi.Dom.Element.scrollIntoView />
       | ["explore"] => <SuggestedApplicationsPage />
       | ["my-profile"] => <MyProfilePage />
       | _ => <Typography.H1> {React.string("Not found.")} </Typography.H1>
@@ -18,7 +19,8 @@ let make = () => {
     let screen =
       switch (url.path) {
       | [] => <LandingPage />
-      | ["categorise"] => <CategorisePage />
+      | ["categorise"] =>
+        <CategorisePage onNextQuestion=Webapi.Dom.Element.scrollIntoView />
       | ["explore"] => <SuggestedApplicationsPage />
       | ["my-profile"] => <MyProfilePage />
       | ["example"] => <ExamplePage />
