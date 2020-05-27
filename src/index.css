@@ -11,13 +11,13 @@ body,
 }
 
 body {
-  @apply bg-gray-200;
+  @apply bg-gray-100;
 }
 
 .chat-container-bg {
   background: linear-gradient(
     0deg,
-    #edf2f7,
+    rgba(247, 250, 252, var(--bg-opacity)),
     rgba(255, 255, 255, 0) 10%,
     rgba(255, 255, 255, 0) 90%,
     #edf2f7
@@ -28,7 +28,7 @@ body {
   content: " ";
   background: linear-gradient(
     0deg,
-    #edf2f7,
+    rgba(247, 250, 252, var(--bg-opacity)),
     rgba(255, 255, 255, 0) 10%,
     rgba(255, 255, 255, 0) 90%,
     #edf2f7
@@ -47,6 +47,14 @@ body {
 }
 
 /* Justify */
+.justify-stretch {
+  justify-content: stretch;
+}
+
+.justify-items-center {
+  justify-items: center;
+}
+
 .justify-self-start {
   justify-self: start;
 }

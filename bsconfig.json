@@ -25,8 +25,9 @@
       "command": "tailwindcss build $in -o $out -c ../../tailwind.config.js"
     }
   ],
-  "bsc-flags": ["-bs-super-errors", "-bs-no-version-header"],
+  "bsc-flags": ["-bs-super-errors", "-bs-no-version-header", "-open Belt"],
   "ppx-flags": [
+    "@baransu/graphql_ppx_re/ppx",
     "bs-let/ppx",
     "re-formality/ppx",
     "decco/ppx",
@@ -39,13 +40,16 @@
     }
   ],
   "suffix": ".bs.js",
-  "namespace": false,
+  "namespace": true,
   "bs-dependencies": [
+    "bs-react-is-visible",
     "bs-webapi",
-    "reason-react",
+    "decco",
     "re-classnames",
     "re-formality",
-    "decco"
+    "reason-react",
+    "reason-apollo",
+    "reason-apollo-hooks"
   ],
   "bs-dev-dependencies": [
     "reason-test-framework",

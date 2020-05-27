@@ -1,5 +1,3 @@
-open Belt;
-
 module Label = {
   [@react.component]
   let make = (~text) => {
@@ -136,9 +134,9 @@ module ChatFormAnswerInput = {
         placeholder
       />
       <button
-        className=[%tw "bg-gray-300 h-full p-2 rounded-r"]
+        className=[%tw "bg-gray-300 text-gray-500 h-full py-2 px-4 rounded-r"]
         disabled={String.length(inputValue) == 0}>
-        {React.string("Skicka")}
+        <SVGSend width="18" fill="currentColor" />
       </button>
     </form>;
   };
@@ -165,9 +163,31 @@ module Link = {
   [@react.component]
   let make = (~to_, ~children, ~active=false) => {
     <button
-      className={Cn.ifTrue([%tw "bg-blue-500"], active)}
+      className={String.concat(
+        " ",
+        [
+          Cn.ifTrue([%tw "text-blue-500"], active),
+          Cn.ifTrue([%tw "text-gray-600"], !active),
+        ],
+      )}
       onClick={_event => ReasonReactRouter.push(to_)}>
       children
     </button>;
+  };
+};
+
+module ApplicationThumbnail = {
+  [@react.component]
+  let make = (~link, ~id, ~appName) => {
+    <Layout.Column
+      classNames=[%tw "justify-stretch justify-items-center w-full"]>
+      <a
+        href=link
+        target="_blank"
+        key=id
+        className=[%tw "bg-white rounded-xl p-4 shadow-lg w-full h-32"]
+      />
+      <p> {React.string({j|$appName|j})} </p>
+    </Layout.Column>;
   };
 };

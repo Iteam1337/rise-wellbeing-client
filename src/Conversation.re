@@ -1,4 +1,4 @@
-open Belt;
+open Bindings;
 
 type answer =
   | Text(string)
@@ -9,10 +9,15 @@ type action =
 
 type state = {
   questionIndex: int,
+  answeredQuestions: list(Shared.Question.question),
   questions: list(Shared.Question.question),
 };
 
-let initialState = questions => {questionIndex: 0, questions};
+let initialState = questions => {
+  answeredQuestions: [],
+  questionIndex: 0,
+  questions,
+};
 
 let reducer = (state, action) =>
   switch (action) {
@@ -57,7 +62,18 @@ let reducer = (state, action) =>
           )
       };
 
-    {questions: updatedQuestions, questionIndex: state.questionIndex + 1};
+    let answeredQuestions =
+      updatedQuestions
+      ->List.splitAt(state.questionIndex + 1)
+      ->Option.mapWithDefault([], ((previousQuestions, _remainingQuestions)) =>
+          previousQuestions
+        );
+
+    {
+      answeredQuestions,
+      questions: updatedQuestions,
+      questionIndex: state.questionIndex + 1,
+    };
   };
 
 let questionToReactElement = (~immediate, ~delayed, question) => {
@@ -109,30 +125,70 @@ let questionToReactElement = (~immediate, ~delayed, question) => {
 };
 
 [@react.component]
-let make = (~questions: list(Shared.Question.question)) => {
+let make =
+    (~questions: list(Shared.Question.question), ~onNextQuestion=_ => ()) => {
+  let sentryNodeRef = React.useRef(Js.Nullable.null);
+
   let (state, dispatch) =
     React.useReducer(reducer, initialState(questions));
 
   let questionToRender = state.questions->List.get(state.questionIndex);
 
-  let answeredQuestions =
-    state.questions
-    ->List.splitAt(state.questionIndex)
-    ->Option.mapWithDefault([], ((previousQuestions, _remainingQuestions)) =>
-        previousQuestions
-      );
+  React.useEffect1(
+    () => {
+      sentryNodeRef.current
+      ->Js.Nullable.toOption
+      ->Option.mapWithDefault((), onNextQuestion);
+
+      None;
+    },
+    [|state.questionIndex|],
+  );
 
   <Layout.Container
-    classNames={String.concat(" ", [[%tw "h-full overflow-y-scroll"], ""])}>
-    <Layout.Column spacing=`Small>
-      {answeredQuestions
-       ->List.map(questionToReactElement(~immediate=true, ~delayed=false))
-       ->List.toArray
-       ->React.array}
+    classNames={String.concat(
+      " ",
+      [[%tw "h-full overflow-y-scroll px-6"], ""],
+    )}>
+    <Layout.Column spacing=`Small classNames=[%tw "py-8 pb-16"]>
+      <Framer.AnimatePresence initial=false>
+        {state.answeredQuestions
+         ->List.map(question => {
+             let id =
+               switch (question) {
+               | Select({id, _}) => id
+               | Text({id, _}) => id
+               };
+             <Framer.Motion.div
+               key=id
+               positionTransition=false
+               initial={"opacity": 1, "y": 0, "scale": 1}
+               animate={"opacity": 1, "y": 0, "scale": 1}
+               exit={
+                 "opacity": 1,
+                 "scale": 1,
+                 "transition": {
+                   "duration": 0.5,
+                 },
+               }>
+               {questionToReactElement(
+                  question,
+                  ~immediate=false,
+                  ~delayed=false,
+                )}
+             </Framer.Motion.div>;
+           })
+         ->List.toArray
+         ->React.array}
+      </Framer.AnimatePresence>
       {questionToRender->Option.mapWithDefault(
          React.null,
          questionToReactElement(~immediate=false, ~delayed=true),
        )}
+      <span
+        className=[%tw "h-0"]
+        ref={ReactDOMRe.Ref.domRef(sentryNodeRef)}
+      />
     </Layout.Column>
     <div
       key={state.questionIndex->string_of_int}
