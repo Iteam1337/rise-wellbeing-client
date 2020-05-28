@@ -1,0 +1,17 @@
+type Category {
+  id: String! @fake(type: uuid)
+  name: String! @fake(type: firstName)
+}
+
+type Service {
+  category: [Category!]! @listLength(min: 1, max: 2)
+  link: String! @examples(values: ["http://localhost:3001?referer=123"])
+  contact: String! @fake(type: firstName)
+  name: String! @fake(type: firstName)
+  id: ID! @fake(type: uuid)
+}
+
+type Query {
+  categories: [Category!]! @listLength(min: 6, max: 6)
+  services: [Service!]! @listLength(min: 6, max: 10)
+}

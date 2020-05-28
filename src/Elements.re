@@ -185,9 +185,27 @@ module ApplicationThumbnail = {
         href=link
         target="_blank"
         key=id
-        className=[%tw "bg-white rounded-xl p-4 shadow-lg w-full h-32"]
+        className=[%tw "bg-white rounded-xl p-4 w-full h-32"]
       />
       <p> {React.string({j|$appName|j})} </p>
     </Layout.Column>;
+  };
+};
+
+module Tag = {
+  [@react.component]
+  let make = (~text, ~onClick, ~active) => {
+    <button
+      onClick
+      className={String.concat(
+        " ",
+        [
+          [%tw "py-2 px-4 rounded-full"],
+          Cn.ifTrue([%tw "bg-blue-200 text-blue-800"], active),
+          Cn.ifTrue([%tw "bg-white text-gray-600"], !active),
+        ],
+      )}>
+      {React.string(text)}
+    </button>;
   };
 };
