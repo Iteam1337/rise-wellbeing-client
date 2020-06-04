@@ -1,17 +1,19 @@
-module ServicesQuery = [%graphql
-  {|
-    query ServicesAndCategories {
-      services {
-        categories {
-          id
-          name
-        }
-        id
-        link
-        name
-      }
+type category = {
+  id: string,
+  name: string,
+};
 
-      categories {
+type services = {
+  id: string,
+  link: string,
+  name: string,
+  categories: array(category),
+};
+
+module CategoriesQuery = [%graphql
+  {|
+    query Categories {
+      categories @bsRecord {
         id
         name
       }
@@ -19,28 +21,47 @@ module ServicesQuery = [%graphql
   |}
 ];
 
-type state('service, 'tag) = {
-  activeTags: list(Js.t('tag)),
-  availableTags: list(Js.t('tag)),
-  services: list(Js.t('service)),
+module ServicesQuery = [%graphql
+  {|
+    query Services {
+      services @bsRecord {
+        categories @bsRecord {
+          id
+          name
+        }
+        id
+        link
+        name
+      }
+    }
+  |}
+];
+
+type state = {
+  activeTags: list(category),
+  availableTags: list(category),
+  services: list(services),
 };
 
 [@react.component]
 let make = () => {
   let (state, setState) =
     React.useState(_ => {activeTags: [], availableTags: [], services: []});
-  let (status, _) = ApolloHooks.useQuery(ServicesQuery.definition);
 
-  React.useEffect1(
+  let (servicesStatus, _) = ApolloHooks.useQuery(ServicesQuery.definition);
+  let (categoriesStatus, _) =
+    ApolloHooks.useQuery(CategoriesQuery.definition);
+
+  React.useEffect2(
     () => {
-      switch (status) {
-      | Data(data) =>
+      switch (servicesStatus, categoriesStatus) {
+      | (Data(serviceData), Data(categoriesData)) =>
         setState(prevState =>
           {
             ...prevState,
-            services: data##services->List.fromArray,
+            services: serviceData##services->List.fromArray,
             availableTags:
-              data##categories
+              categoriesData##categories
               ->Array.map(category => category)
               ->List.fromArray,
           }
@@ -50,17 +71,17 @@ let make = () => {
 
       None;
     },
-    [|status|],
+    (categoriesStatus, servicesStatus),
   );
 
-  let handleTagClick = (wasActive, clickedTag) =>
+  let handleTagClick = (wasActive, clickedTag: category) =>
     if (wasActive) {
       setState(prevState =>
         {
           ...prevState,
           activeTags:
             prevState.activeTags
-            ->List.keep(tag => !String.equal(tag##id, clickedTag##id)),
+            ->List.keep(tag => !String.equal(tag.id, clickedTag.id)),
         }
       );
     } else {
@@ -69,10 +90,10 @@ let make = () => {
       );
     };
 
-  let tagActive = tag => {
+  let tagActive = (tag: category) => {
     state.activeTags
     ->List.has(tag, (activeTag, tagToCheck) =>
-        String.equal(activeTag##id, tagToCheck##id)
+        String.equal(activeTag.id, tagToCheck.id)
       );
   };
 
@@ -89,51 +110,61 @@ let make = () => {
              let isActive = tagActive(tag);
 
              <Elements.Tag
-               key=tag##id
+               key={tag.id}
                onClick={_ => handleTagClick(isActive, tag)}
                active=isActive
-               text=tag##name
+               text={tag.name}
              />;
            })
          ->List.toArray
          ->React.array}
       </Layout.Row>
-      {switch (status) {
-       | NoData
-       | Loading =>
+      {switch (servicesStatus, categoriesStatus) {
+       | (NoData, _)
+       | (_, NoData)
+       | (Loading, _)
+       | (_, Loading) =>
          <Typography.P>
            {React.string({j|Laddar listan med tjänser...|j})}
          </Typography.P>
-       | Error(_) =>
-         <p> {React.string({j|Hmm. Någonting verkar ha gått snett.|j})} </p>
-       | Data(data) =>
-         <Layout.Column classNames=[%tw "grid-cols-2 pb-16"] spacing=`Medium>
-           {data##services
-            ->Array.keep(service =>
-                if (List.length(state.activeTags) > 0) {
-                  service##categories
-                  ->Array.some(category =>
-                      state.activeTags
-                      ->List.has(category, (activeTag, serviceToCheck) =>
-                          String.equal(activeTag##id, serviceToCheck##id)
-                        )
-                    );
-                } else {
-                  true;
-                }
-              )
-            ->Array.map(app => {
-                let appName = app##name;
 
-                <Elements.ApplicationThumbnail
-                  key=app##id
-                  appName
-                  link=app##link
-                  id=app##id
-                />;
-              })
-            ->React.array}
-         </Layout.Column>
+       | (Error(_), _)
+       | (_, Error(_)) =>
+         <p> {React.string({j|Hmm. Någonting verkar ha gått snett.|j})} </p>
+
+       | (Data(serviceData), Data(_categoriesData)) =>
+         <>
+           <Typography.P>
+             <Elements.Link to_="/categorise">
+               <Typography.H2> {React.string("Starta guide")} </Typography.H2>
+             </Elements.Link>
+           </Typography.P>
+           <Layout.Column classNames=[%tw "grid-cols-2"] spacing=`Medium>
+             {serviceData##services
+              ->Array.keep(service =>
+                  if (List.length(state.activeTags) > 0) {
+                    service.categories
+                    ->Array.some(category =>
+                        state.activeTags
+                        ->List.has(category, (activeTag, serviceToCheck) =>
+                            String.equal(activeTag.id, serviceToCheck.id)
+                          )
+                      );
+                  } else {
+                    true;
+                  }
+                )
+              ->Array.map(app => {
+                  <Elements.ApplicationThumbnail
+                    key={app.id}
+                    appName={app.name}
+                    link={app.link}
+                    id={app.id}
+                  />
+                })
+              ->React.array}
+           </Layout.Column>
+         </>
        }}
     </Layout.Column>
   </Layout.Container>;

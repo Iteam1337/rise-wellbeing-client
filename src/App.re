@@ -36,7 +36,7 @@ let make = () => {
       };
 
     <div className=[%tw "md:max-w-screen-lg h-full mx-auto"]>
-      screen
+      <div className=[%tw "pb-20"]> screen </div>
       <BottomNavigation currentRoute />
     </div>;
   };

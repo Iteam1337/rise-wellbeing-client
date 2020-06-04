@@ -209,3 +209,21 @@ module Tag = {
     </button>;
   };
 };
+
+module Article = {
+  [@react.component]
+  let make = (~title, ~text, ~asset=?) => {
+    <Layout.Column classNames=[%tw "p-6 rounded-lg bg-gray-300 relative"]>
+      <Layout.Row classNames=[%tw "items-center"]>
+        <Typography.H2> {React.string({j|$title|j})} </Typography.H2>
+        <span className=[%tw "ml-auto"]>
+          <SVGHeart width="16" height="16" fill="black" />
+        </span>
+      </Layout.Row>
+      {asset->Option.mapWithDefault(React.null, asset =>
+         <img src=asset alt="" className=[%tw "w-full h-auto"] />
+       )}
+      <Typography.P> {React.string({j|$text|j})} </Typography.P>
+    </Layout.Column>;
+  };
+};

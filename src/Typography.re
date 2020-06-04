@@ -10,7 +10,10 @@ module H1 = {
 module H2 = {
   [@react.component]
   let make = (~children) => {
-    <h2 className=[%tw "text-gray-700 text-lg md:text-2xl mb-2 md:mb-4"]>
+    <h2
+      className=[%tw
+        "text-gray-700 text-lg md:text-2xl mb-2 md:mb-4 font-bold"
+      ]>
       children
     </h2>;
   };
