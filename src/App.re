@@ -9,7 +9,7 @@ let make = () => {
       | [] => <FirstTimeVisitLandingPage />
       | ["categorise"] =>
         <CategorisePage onNextQuestion=Webapi.Dom.Element.scrollIntoView />
-      | ["explore"] => <SuggestedApplicationsPage />
+      | ["explore"] => <ApplicationCategoriesPage />
       | ["my-profile"] => <MyProfilePage />
       | _ => <Typography.H1> {React.string("Not found.")} </Typography.H1>
       };
@@ -21,7 +21,7 @@ let make = () => {
       | [] => <LandingPage />
       | ["categorise"] =>
         <CategorisePage onNextQuestion=Webapi.Dom.Element.scrollIntoView />
-      | ["explore"] => <SuggestedApplicationsPage />
+      | ["explore"] => <ApplicationCategoriesPage />
       | ["my-profile"] => <MyProfilePage />
       | ["example"] => <ExamplePage />
       | _ => <Typography.H1> {React.string("Not found.")} </Typography.H1>
@@ -36,8 +36,8 @@ let make = () => {
       };
 
     <div className=[%tw "md:max-w-screen-lg h-full mx-auto"]>
-      <div className=[%tw "pb-20"]> screen </div>
-      <BottomNavigation currentRoute />
+      screen
+      <Elements.BottomNavigation currentRoute />
     </div>;
   };
 };

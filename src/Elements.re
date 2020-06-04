@@ -176,6 +176,29 @@ module Link = {
   };
 };
 
+module CategoryThumbnail = {
+  [@react.component]
+  let make = (~data) => {
+    let categoryName = data##name;
+
+    let (isOpen, setIsOpen) = React.useState(_ => false);
+
+    <Layout.Column
+      classNames=[%tw "justify-stretch justify-items-center w-full"]>
+      <button
+        onClick={_ => setIsOpen(_wasOpen => true)}
+        className=[%tw "bg-white rounded-xl p-4 w-full h-32"]>
+        <CategoryModal
+          data
+          isOpen
+          onClose={_ => setIsOpen(_wasOpen => false)}
+        />
+      </button>
+      <p> {React.string({j|$categoryName|j})} </p>
+    </Layout.Column>;
+  };
+};
+
 module ApplicationThumbnail = {
   [@react.component]
   let make = (~link, ~id, ~appName) => {
@@ -212,14 +235,26 @@ module Tag = {
 
 module Article = {
   [@react.component]
-  let make = (~title, ~text, ~asset=?) => {
+  let make = (~title, ~text, ~asset=?, ~articleType: [ | `Article | `Quote]) => {
     <Layout.Column classNames=[%tw "p-6 rounded-lg bg-gray-300 relative"]>
-      <Layout.Row classNames=[%tw "items-center"]>
-        <Typography.H2> {React.string({j|$title|j})} </Typography.H2>
-        <span className=[%tw "ml-auto"]>
-          <SVGHeart width="16" height="16" fill="black" />
-        </span>
-      </Layout.Row>
+      <span className=[%tw "absolute top-0 right-0 p-6"]>
+        <SVGHeart width="16" height="16" fill="black" />
+      </span>
+      {switch (articleType) {
+       | `Article =>
+         <Layout.Row classNames=[%tw "items-center mr-4"]>
+           <Typography.H2> {React.string({j|$title|j})} </Typography.H2>
+         </Layout.Row>
+       | `Quote =>
+         <Layout.Row
+           classNames=[%tw "items-center justify-center w-5/6 mx-auto"]>
+           <blockquote className=[%tw "grid gap-8 col-start-2 col-end-2"]>
+             <Typography.Quote>
+               {React.string({j|"$title"|j})}
+             </Typography.Quote>
+           </blockquote>
+         </Layout.Row>
+       }}
       {asset->Option.mapWithDefault(React.null, asset =>
          <img src=asset alt="" className=[%tw "w-full h-auto"] />
        )}
@@ -227,3 +262,26 @@ module Article = {
     </Layout.Column>;
   };
 };
+
+module BottomNavigation = {
+  [@react.component]
+  let make = (~currentRoute) => {
+    <nav
+      className=[%tw
+        "fixed bottom-0 left-0 right-0 w-full h-16 bg-white border-t border-gray-200"
+      ]>
+      <Layout.Row classNames=[%tw "h-full items-center justify-around"]>
+        <Link to_="/" active={currentRoute == `Feed}>
+          <SVGHome width="24" height="24" fill="currentColor" />
+        </Link>
+        <Link to_="/explore" active={currentRoute == `Applications}>
+          <SVGExplore width="24" height="24" fill="currentColor" />
+        </Link>
+        <Link to_="/my-profile" active={currentRoute == `Profile}>
+          <SVGUserSolidCircle width="24" height="24" fill="currentColor" />
+        </Link>
+      </Layout.Row>
+    </nav>;
+  };
+};
+

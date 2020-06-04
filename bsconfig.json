@@ -47,9 +47,10 @@
     "decco",
     "re-classnames",
     "re-formality",
-    "reason-react",
     "reason-apollo",
-    "reason-apollo-hooks"
+    "reason-apollo-hooks",
+    "reason-react",
+    "bs-reach"
   ],
   "bs-dev-dependencies": [
     "reason-test-framework",

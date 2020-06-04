@@ -1,0 +1,1 @@
+[%raw {| module.exports = {} |}];

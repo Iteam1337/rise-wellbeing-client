@@ -1,19 +1,7 @@
-type category = {
-  id: string,
-  name: string,
-};
-
-type services = {
-  id: string,
-  link: string,
-  name: string,
-  categories: array(category),
-};
-
 module CategoriesQuery = [%graphql
   {|
     query Categories {
-      categories @bsRecord {
+      categories {
         id
         name
       }
@@ -24,9 +12,11 @@ module CategoriesQuery = [%graphql
 module ServicesQuery = [%graphql
   {|
     query Services {
-      services @bsRecord {
-        categories @bsRecord {
+      services {
+        categories {
           id
+          information
+          introduction
           name
         }
         id
@@ -37,10 +27,10 @@ module ServicesQuery = [%graphql
   |}
 ];
 
-type state = {
-  activeTags: list(category),
-  availableTags: list(category),
-  services: list(services),
+type state('service, 'category) = {
+  activeTags: list('category),
+  availableTags: list('category),
+  services: list('service),
 };
 
 [@react.component]
@@ -74,14 +64,13 @@ let make = () => {
     (categoriesStatus, servicesStatus),
   );
 
-  let handleTagClick = (wasActive, clickedTag: category) =>
+  let handleTagClick = (wasActive, clickedTag) =>
     if (wasActive) {
       setState(prevState =>
         {
           ...prevState,
           activeTags:
-            prevState.activeTags
-            ->List.keep(tag => !String.equal(tag.id, clickedTag.id)),
+            prevState.activeTags->List.keep(tag => tag##id !== clickedTag##id),
         }
       );
     } else {
@@ -90,10 +79,10 @@ let make = () => {
       );
     };
 
-  let tagActive = (tag: category) => {
+  let tagActive = tag => {
     state.activeTags
     ->List.has(tag, (activeTag, tagToCheck) =>
-        String.equal(activeTag.id, tagToCheck.id)
+        activeTag##id == tagToCheck##id
       );
   };
 
@@ -110,10 +99,10 @@ let make = () => {
              let isActive = tagActive(tag);
 
              <Elements.Tag
-               key={tag.id}
+               key={tag##id}
                onClick={_ => handleTagClick(isActive, tag)}
                active=isActive
-               text={tag.name}
+               text={tag##name}
              />;
            })
          ->List.toArray
@@ -143,11 +132,11 @@ let make = () => {
              {serviceData##services
               ->Array.keep(service =>
                   if (List.length(state.activeTags) > 0) {
-                    service.categories
+                    service##categories
                     ->Array.some(category =>
                         state.activeTags
                         ->List.has(category, (activeTag, serviceToCheck) =>
-                            String.equal(activeTag.id, serviceToCheck.id)
+                            activeTag##id == serviceToCheck##id
                           )
                       );
                   } else {
@@ -156,10 +145,10 @@ let make = () => {
                 )
               ->Array.map(app => {
                   <Elements.ApplicationThumbnail
-                    key={app.id}
-                    appName={app.name}
-                    link={app.link}
-                    id={app.id}
+                    key={app##id}
+                    appName={app##name}
+                    link={app##link}
+                    id={app##id}
                   />
                 })
               ->React.array}

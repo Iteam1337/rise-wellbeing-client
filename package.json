@@ -10,13 +10,15 @@
     "webpack:production": "NODE_ENV=production webpack",
     "server": "webpack-dev-server",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "schema": "npx get-graphql-schema http://localhost:4000/graphql -j > graphql_schema.json"
   },
   "author": "",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
     "@baransu/graphql_ppx_re": "^0.7.1",
     "@dylanirlbeck/tailwind-ppx": "^0.7.0",
+    "bs-reach": "^0.5.3",
     "bs-react-is-visible": "^0.2.0",
     "bs-webapi": "^0.15.9",
     "decco": "^1.2.1",
