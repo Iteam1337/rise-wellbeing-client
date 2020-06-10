@@ -19,6 +19,7 @@ let initialState = questions => {
   questions,
 };
 
+
 let reducer = (state, action) =>
   switch (action) {
   | Answer(answer) =>

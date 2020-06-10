@@ -3,9 +3,7 @@ module CategoriesQuery = [%graphql
     query Categories {
       categories {
           id
-          information
-          introduction
-          name
+          label
       }
     }
   |}

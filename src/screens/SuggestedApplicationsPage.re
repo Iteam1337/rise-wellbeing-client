@@ -3,7 +3,7 @@ module CategoriesQuery = [%graphql
     query Categories {
       categories {
         id
-        name
+        label
       }
     }
   |}
@@ -15,9 +15,7 @@ module ServicesQuery = [%graphql
       services {
         categories {
           id
-          information
-          introduction
-          name
+          label
         }
         id
         link
@@ -87,7 +85,7 @@ let make = () => {
   };
 
   <Layout.Container spacing=`Small>
-    <Layout.Column spacing=`Medium>
+    <Layout.Column spacing=`Medium classNames=[%tw "pb-20"]>
       <Typography.H1> {React.string("Utforska")} </Typography.H1>
       <Layout.Row
         spacing=`Small
@@ -102,7 +100,7 @@ let make = () => {
                key={tag##id}
                onClick={_ => handleTagClick(isActive, tag)}
                active=isActive
-               text={tag##name}
+               text={tag##label}
              />;
            })
          ->List.toArray

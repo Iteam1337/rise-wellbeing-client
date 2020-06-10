@@ -188,7 +188,7 @@ module CategoryThumbnail = {
       <button
         onClick={_ => setIsOpen(_wasOpen => true)}
         className=[%tw "bg-white rounded-xl p-4 w-full h-32"]>
-        <CategoryModal
+        <ArticleModal
           data
           isOpen
           onClose={_ => setIsOpen(_wasOpen => false)}

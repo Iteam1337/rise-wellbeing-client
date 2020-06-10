@@ -9,7 +9,8 @@ let make = () => {
       | [] => <FirstTimeVisitLandingPage />
       | ["categorise"] =>
         <CategorisePage onNextQuestion=Webapi.Dom.Element.scrollIntoView />
-      | ["explore"] => <ApplicationCategoriesPage />
+      | ["explore"] => <SuggestedApplicationsPage />
+      /* | ["explore"] => <ApplicationCategoriesPage /> */
       | ["my-profile"] => <MyProfilePage />
       | _ => <Typography.H1> {React.string("Not found.")} </Typography.H1>
       };
@@ -21,7 +22,8 @@ let make = () => {
       | [] => <LandingPage />
       | ["categorise"] =>
         <CategorisePage onNextQuestion=Webapi.Dom.Element.scrollIntoView />
-      | ["explore"] => <ApplicationCategoriesPage />
+      | ["explore"] => <SuggestedApplicationsPage />
+      /* | ["explore"] => <ApplicationCategoriesPage /> */
       | ["my-profile"] => <MyProfilePage />
       | ["example"] => <ExamplePage />
       | _ => <Typography.H1> {React.string("Not found.")} </Typography.H1>
