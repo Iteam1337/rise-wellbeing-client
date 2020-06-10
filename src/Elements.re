@@ -179,7 +179,7 @@ module Link = {
 module CategoryThumbnail = {
   [@react.component]
   let make = (~data) => {
-    let categoryName = data##name;
+    let categoryName = data##label;
 
     let (isOpen, setIsOpen) = React.useState(_ => false);
 

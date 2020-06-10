@@ -1,11 +1,11 @@
-let questions = [%raw {j| require("../categorisation.json") |j}];
+let questions: Js.t('questions) = [%raw
+  {| require("../categorisation.json") |}
+];
 
 let q =
   questions##questions
   ->Belt.Array.map(Shared.Question.question_decode)
-  ->Belt.Array.keepMap(q =>
-      q->Belt.Result.mapWithDefault(None, q => Some(q))
-    );
+  ->Belt.Array.keepMap(Belt.Result.mapWithDefault(_, None, q => Some(q)));
 
 [@react.component]
 let make = (~onNextQuestion=_ => ()) => {

@@ -11,8 +11,8 @@ body,
 }
 
 body {
-  font-family: "Noto Sans HK", sans-serif;
-  @apply bg-gray-100 font-normal;
+  font-family: "Roboto", sans-serif;
+  @apply font-normal bg-gray-100;
 }
 
 .chat-container-bg {

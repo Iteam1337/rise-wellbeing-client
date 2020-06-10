@@ -4,6 +4,8 @@ module CategoriesQuery = [%graphql
       categories {
           id
           label
+          introduction
+          information
       }
     }
   |}
@@ -34,7 +36,7 @@ let make = () => {
   );
 
   <Layout.Container spacing=`Small>
-    <Layout.Column spacing=`Medium>
+    <Layout.Column spacing=`Medium classNames=[%tw "pb-20"]>
       <Typography.H1> {React.string("Utforska")} </Typography.H1>
       {switch (categoriesStatus) {
        | NoData

@@ -4,6 +4,9 @@ module.exports = {
   purge: [],
   theme: {
     extend: {
+      height: {
+        "1/3": "33vh",
+      },
       borderRadius: {
         xl: "1rem",
       },
