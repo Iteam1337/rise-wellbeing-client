@@ -1,5 +1,6 @@
 [%raw "require('@reach/dialog/styles.css')"];
 
+[@genType]
 [@react.component]
 let make = (~isOpen, ~data, ~onClose) => {
   let title = data##label;

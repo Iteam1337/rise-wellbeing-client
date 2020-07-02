@@ -124,6 +124,7 @@ let questionToReactElement = (~immediate, ~delayed, question) => {
   };
 };
 
+[@genType]
 [@react.component]
 let make =
     (~questions: list(Shared.Question.question), ~onNextQuestion=_ => ()) => {

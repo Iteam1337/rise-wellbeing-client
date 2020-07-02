@@ -4,7 +4,8 @@
 
 ```sh
 npm install
-npm start
+npm run build:styles
+npm start # compiles .re-files to .js
 # in another tab
 npm run server
 ```
@@ -17,6 +18,7 @@ To use a port other than 8000 set the `PORT` environment variable (`PORT=8080 np
 
 ```sh
 npm run clean
+npm run build:styles
 npm run build
 npm run webpack:production
 ```

@@ -6,6 +6,7 @@ module Container = {
     | `Medium => [%tw "p-6"]
     | `Large => [%tw "p-8"];
 
+  [@genType]
   [@react.component]
   let make = (~children, ~spacing=`None, ~classNames=?) => {
     let additionalClassNames = Cn.unpack(classNames);
@@ -27,6 +28,7 @@ module Column = {
     | `Medium => [%tw "gap-6"]
     | `Large => [%tw "gap-8"];
 
+  [@genType]
   [@react.component]
   let make = (~children, ~spacing=`Small, ~classNames=?) => {
     let additionalClassNames = Cn.unpack(classNames);
@@ -49,6 +51,7 @@ module Row = {
     | `Medium => [%tw "gap-6"]
     | `Large => [%tw "gap-8"];
 
+  [@genType]
   [@react.component]
   let make = (~children, ~spacing=`Small, ~classNames=?) => {
     let additionalClassNames = Cn.unpack(classNames);

@@ -1,4 +1,5 @@
 module Label = {
+  [@genType]
   [@react.component]
   let make = (~text) => {
     <label
@@ -9,6 +10,7 @@ module Label = {
 };
 
 module Input = {
+  [@genType]
   [@react.component]
   let make =
       (
@@ -61,12 +63,12 @@ module MessageBubble = {
     | `Right => [%tw
         "ml-8 justify-self-end self-end first:rounded-br-sm last:rounded-tr-sm"
       ];
-
   let colorToStyling =
     fun
     | `Default => [%tw "bg-white text-black"]
     | `Contrast => [%tw "bg-black text-white"];
 
+  [@genType]
   [@react.component]
   let make =
       (
@@ -94,6 +96,7 @@ module MessageBubble = {
 };
 
 module BubbleOption = {
+  [@genType]
   [@react.component]
   let make = (~children, ~onClick) => {
     <button
@@ -107,7 +110,9 @@ module BubbleOption = {
     </button>;
   };
 };
+
 module ChatFormAnswerInput = {
+  [@genType]
   [@react.component]
   let make = (~onSubmit, ~placeholder={j|"Skriv ditt svar här...|j}) => {
     let (inputValue, setInputValue) = React.useState(_ => "");
@@ -143,6 +148,7 @@ module ChatFormAnswerInput = {
 };
 
 module ChatFormAnswerOptions = {
+  [@genType]
   [@react.component]
   let make = (~options: list(Shared.Question.selectOption), ~onSelect) => {
     <Layout.Row spacing=`None classNames=[%tw " justify-center"]>
@@ -160,6 +166,7 @@ module ChatFormAnswerOptions = {
 };
 
 module Link = {
+  [@genType]
   [@react.component]
   let make = (~to_, ~children, ~active=false) => {
     <button
@@ -177,6 +184,7 @@ module Link = {
 };
 
 module CategoryThumbnail = {
+  [@genType]
   [@react.component]
   let make = (~data) => {
     let categoryName = data##label;
@@ -200,12 +208,15 @@ module CategoryThumbnail = {
 };
 
 module ApplicationThumbnail = {
+  [@genType]
   [@react.component]
   let make = (~link, ~id, ~appName) => {
+    let registrationId = {js|/?dp_referall_id=OK123|js};
+
     <Layout.Column
       classNames=[%tw "justify-stretch justify-items-center w-full"]>
       <a
-        href=link
+        href={link ++ registrationId}
         target="_blank"
         key=id
         className=[%tw "bg-white rounded-xl p-4 w-full h-32"]
@@ -216,6 +227,7 @@ module ApplicationThumbnail = {
 };
 
 module Tag = {
+  [@genType]
   [@react.component]
   let make = (~text, ~onClick, ~active) => {
     <button
@@ -284,4 +296,3 @@ module BottomNavigation = {
     </nav>;
   };
 };
-
